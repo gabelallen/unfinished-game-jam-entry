@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @onready var rect = $ColorRect
+@onready var animation = $AnimatedSprite2D
 
 #movement
 var target_reach_distance = 15.0
@@ -8,20 +9,30 @@ var speed = 200.0
 var wobble_amount = 3.0
 var wobble_speed_max = 30.0
 var target_position: Vector2
-var is_moving: bool = false
+var is_moving = false
 var is_following_cursor = false
-var wobble_time: float = 0.0
+var wobble_time = 0.0
 var prev_position = Vector2.ZERO
 var realspeed = 0
 var min_command_timer = 1 #how long a command MUST be followed
 var cur_command_timer = 0 #how long the most recent command was followed
 
-var colors = [ #https://coolors.co/011627-fdfffc-2ec4b6-e71d36-ff9f1c
+var birth_color
+var is_highlighted = false
+var is_selected = false
+
+var colors = [ 
+	#https://coolors.co/011627-fdfffc-2ec4b6-e71d36-ff9f1c
+	#https://coolors.co/palette/ff9f1c-ffaf43-ffbf69-ffdfb4-ffffff-e5f9f8-cbf3f0-7ddcd3-2ec4b6
 	#Color("#011627"), #rich black
-	Color("fdfffc"), #baby powder
+	#Color("fdfffc"), #baby powder
 	Color("2ec4b6"), #light sea green
-	Color("e71d36"), #red (pantone)
-	Color("#FF9F1C"), #orange peel
+	Color("e5f9f8"),
+	Color("cbf3f0"),
+	Color("e5f9f8"),
+	Color("7DDCD3"),	
+	#Color("e71d36"), #red (pantone)
+	#Color("#FF9F1C"), #orange peel
 ]
 
 #collision
@@ -31,22 +42,31 @@ var avoidance_strength = 1000.0 #strength of the pushback
 func _ready() -> void:
 	#get randomc color
 	add_to_group("moving_characters")
-	var random_color = colors[randi() % colors.size()]
-	rect.color = random_color
+	birth_color = colors[randi() % colors.size()]
+	animation.modulate = birth_color
+	rect.color = birth_color
+	
+	animation.play("idle")
 	
 	prev_position = global_position
 
 func _input(event):
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT: 
-			if event.pressed: #held down
-				is_following_cursor = true
-				target_position = get_global_mouse_position()
-				is_moving = true
-			else: #clicked
-				is_following_cursor = false
+		if is_selected:
+			if event.button_index == MOUSE_BUTTON_RIGHT: 
+				if event.pressed: #held downw
+					is_following_cursor = true
+					target_position = get_global_mouse_position()
+					is_moving = true
+				else: #clicked
+					is_following_cursor = false
+			else: is_following_cursor = false
 
 func _physics_process(delta):
+	if is_highlighted: animation.modulate = Color('green')
+	else: animation.modulate = Color('red')
+	if is_selected: animation.modulate = Color(birth_color)
+	
 	Global.latest_destination = target_position
 	realspeed = global_position.distance_to(prev_position) / delta
 	prev_position = global_position
@@ -58,9 +78,15 @@ func _physics_process(delta):
 		cur_command_timer+=delta #this is necessary bc we want there to be NO timer when we are hold down LMB
 	
 	if is_moving:
+		animation.play("walk")
 		#rect.color = Color('green')
 		var direction = (target_position - global_position).normalized()
 		velocity = direction * speed
+		
+		if direction.x <= 0:
+			animation.flip_h = false
+		else: 
+			animation.flip_h = true
 
 		#collision
 		var friends = get_tree().get_nodes_in_group("moving_characters")
@@ -76,13 +102,15 @@ func _physics_process(delta):
 						velocity = Vector2.ZERO
 						rotation = 0.0
 						is_following_cursor = false
+						animation.play("idle")
+						
 
 		move_and_slide()
 		
 		#movement wobble
 		var wobble_speed = (realspeed/speed)*wobble_speed_max #wobble speed scales with real speed
 		wobble_time += delta * wobble_speed
-		rotation = deg_to_rad(sin(wobble_time) * wobble_amount)
+		animation.rotation = deg_to_rad(sin(wobble_time) * wobble_amount)
 
 		if global_position.distance_to(target_position) < target_reach_distance and not is_following_cursor:
 			cur_command_timer = 0
@@ -90,6 +118,6 @@ func _physics_process(delta):
 			velocity = Vector2.ZERO
 			rotation = 0.0
 			is_following_cursor = false
+			animation.play("idle")			
 	else:
-		print()
-		#rect.color = Color('red')
+		animation.play("idle")

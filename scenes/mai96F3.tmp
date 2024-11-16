@@ -32,4 +32,4 @@ script = ExtResource("4_knnb8")
 
 [node name="Selector" parent="." instance=ExtResource("6_v8eca")]
 
-[connection signal="draw" from="Selector" to="Selector" method="draw"]
+[connection signal="draw" from="Selector" to="Selector" method="_on_draw"]
