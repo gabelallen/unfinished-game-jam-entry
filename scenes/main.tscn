@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://cvvavb3nkk44a"]
+
+[ext_resource type="PackedScene" uid="uid://ctf87vhlktymc" path="res://scenes/little_guy.tscn" id="1_p2iuw"]
+[ext_resource type="Script" path="res://scripts/debug_tools.gd" id="2_r7t5h"]
+[ext_resource type="Script" path="res://scripts/camera_2d.gd" id="2_xi5x0"]
+[ext_resource type="Script" path="res://scripts/little_guys.gd" id="3_s345c"]
+[ext_resource type="Script" path="res://scripts/label.gd" id="4_knnb8"]
+
+[node name="main" type="Node2D"]
+
+[node name="LittleGuy" parent="." instance=ExtResource("1_p2iuw")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("2_xi5x0")
+
+[node name="DebugTools" type="Node2D" parent="."]
+script = ExtResource("2_r7t5h")
+
+[node name="LittleGuys" type="Node2D" parent="."]
+script = ExtResource("3_s345c")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -576.0
+offset_top = -324.0
+offset_right = 75.0
+offset_bottom = -51.0
+scale = Vector2(0.1, 0.1)
+theme_override_font_sizes/font_size = 200
+text = "FPS: "
+script = ExtResource("4_knnb8")
