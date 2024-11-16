@@ -10,10 +10,10 @@ func _input(event: InputEvent) -> void:
 		if event.keycode == KEY_1 and event.pressed: #spawn little guy at cursor
 			for i in 5:
 				var littleguyscene = load("res://scenes/little_guy.tscn").instantiate()
-				littleguyscene.position = get_global_mouse_position()
+				littleguyscene.position = get_global_mouse_position() +- Vector2(randi()%20, randi()%20)
 				
 				#make them move along
-				littleguyscene.target_position = Global.latest_destination+Vector2(randi()%20, randi()%20)
+				littleguyscene.target_position = Global.latest_destination
 				littleguyscene.is_moving = true
 				littleguyscene.is_selected = true
 				
