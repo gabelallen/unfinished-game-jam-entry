@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://c8kw4b7nsmqmm"]
+
+[ext_resource type="Script" path="res://scenes/rock.gd" id="1_skd25"]
+[ext_resource type="Texture2D" uid="uid://jfdey0vpiu2m" path="res://rock-Sheet.png" id="2_yw5j2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fepkn"]
+atlas = ExtResource("2_yw5j2")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5p2g4"]
+atlas = ExtResource("2_yw5j2")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qhsk3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fepkn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5p2g4")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 5.0
+}]
+
+[node name="Rock" type="Node2D"]
+script = ExtResource("1_skd25")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_qhsk3")
+
+[node name="HurtTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[connection signal="timeout" from="HurtTimer" to="." method="_on_hurt_timer_timeout"]

@@ -37,12 +37,12 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vh3ci")
 }, {
-"duration": 1.0,
+"duration": 0.3,
 "texture": SubResource("AtlasTexture_x3ee1")
 }],
 "loop": true,
 "name": &"kick",
-"speed": 5.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -61,11 +61,14 @@ script = ExtResource("1_luqwh")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_s4fg0")
-animation = &"walk"
+animation = &"kick"
+frame_progress = 0.914249
 
 [node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-offset_left = -7.0
+offset_left = -2.0
 offset_top = 16.0
-offset_right = 7.0
+offset_right = 2.0
 offset_bottom = 17.0
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+energy = 0.0

@@ -41,8 +41,8 @@ func draw():
 		var selection_rect = Rect2(rect_position, rect_size) #rect for drawing on screen
 		var expanded_rect = selection_rect.grow(15) #actual seclection rect size is bigger
 		
-		draw_rect(selection_rect, Color(1, 0, 0, 0.3))
-		draw_rect(expanded_rect, Color(0, 1, 0, 0.2))
+		draw_rect(selection_rect, Color(1, 1, 1, 0.2))
+		#draw_rect(expanded_rect, Color(0, 1, 0, 0.2))
 
 		#highlight little guys in selection
 		var little_guys = get_tree().get_nodes_in_group("moving_characters")

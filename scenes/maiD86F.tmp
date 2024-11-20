@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=3 uid="uid://cvvavb3nkk44a"]
+
+[ext_resource type="PackedScene" uid="uid://ctf87vhlktymc" path="res://scenes/little_guy.tscn" id="1_p2iuw"]
+[ext_resource type="Script" path="res://scripts/debug_tools.gd" id="2_r7t5h"]
+[ext_resource type="Script" path="res://scripts/camera_2d.gd" id="2_xi5x0"]
+[ext_resource type="Script" path="res://scripts/little_guys.gd" id="3_s345c"]
+[ext_resource type="Script" path="res://scripts/label.gd" id="4_knnb8"]
+[ext_resource type="PackedScene" uid="uid://c0mj7bab82obv" path="res://scenes/selector.tscn" id="6_v8eca"]
+[ext_resource type="PackedScene" uid="uid://mympqddy4p3r" path="res://scenes/debris.tscn" id="7_gm61x"]
+[ext_resource type="PackedScene" uid="uid://c8kw4b7nsmqmm" path="res://scenes/rock.tscn" id="8_plglt"]
+
+[node name="main" type="Node2D"]
+
+[node name="LittleGuy" parent="." instance=ExtResource("1_p2iuw")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("2_xi5x0")
+
+[node name="DebugTools" type="Node2D" parent="."]
+script = ExtResource("2_r7t5h")
+
+[node name="LittleGuys" type="Node2D" parent="."]
+script = ExtResource("3_s345c")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -576.0
+offset_top = -324.0
+offset_right = 75.0
+offset_bottom = -51.0
+scale = Vector2(0.1, 0.1)
+theme_override_font_sizes/font_size = 200
+text = "FPS: "
+script = ExtResource("4_knnb8")
+
+[node name="Selector" parent="." instance=ExtResource("6_v8eca")]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -1
+z_as_relative = false
+offset_left = -618.0
+offset_top = -361.0
+offset_right = 635.0
+offset_bottom = 372.0
+color = Color(0.00392157, 0.0862745, 0.152941, 1)
+
+[node name="Debris" parent="." instance=ExtResource("7_gm61x")]
+position = Vector2(60, -1)
+
+[node name="Rock" parent="." instance=ExtResource("8_plglt")]
+position = Vector2(179, -8)
+
+[connection signal="hit_rock_signal" from="LittleGuy" to="Rock" method="_on_little_guy_hit_rock_signal"]
+[connection signal="draw" from="Selector" to="Selector" method="draw"]

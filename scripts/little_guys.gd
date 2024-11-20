@@ -4,6 +4,7 @@ var little_guys = []
 
 func _process(delta: float) -> void:
 	little_guys = get_tree().get_nodes_in_group("moving_characters")
+	Global.friends = little_guys
 	update_z_index()
 
 #make sure the nearest character shows on top
@@ -13,4 +14,4 @@ func update_z_index():
 
 	#assign z index
 	for i in range(len(little_guys)):
-		little_guys[i].z_index = i
+		little_guys[i].animation.z_index = i

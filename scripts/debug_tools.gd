@@ -18,6 +18,10 @@ func _input(event: InputEvent) -> void:
 				littleguyscene.is_selected = true
 				
 				get_parent().add_child(littleguyscene)
+		if event.keycode == KEY_BACKSPACE and event.pressed: #kill selected little guys
+			for friend in Global.friends:
+				if friend.is_selected:
+					friend.die()
 
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
