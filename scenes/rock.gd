@@ -19,8 +19,7 @@ pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	var friends = get_tree().get_nodes_in_group("moving_characters")
-	for other in friends:
+	for other in Global.friends:
 		var distance = global_position.distance_to(other.global_position)
 		if distance < squish_radius:
 			var push_away = (global_position - other.global_position).normalized() * avoidance_strength / distance

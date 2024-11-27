@@ -45,8 +45,7 @@ func draw():
 		#draw_rect(expanded_rect, Color(0, 1, 0, 0.2))
 
 		#highlight little guys in selection
-		var little_guys = get_tree().get_nodes_in_group("moving_characters")
-		for guy in little_guys:
+		for guy in Global.friends:
 			guy.is_selected = false
 			if expanded_rect.has_point(guy.position):
 				guy.is_highlighted = true

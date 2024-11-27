@@ -2,10 +2,10 @@ extends Node2D
 
 var little_guys = []
 
-func _process(delta: float) -> void:
-	little_guys = get_tree().get_nodes_in_group("moving_characters")
-	Global.friends = little_guys
-	update_z_index()
+func _physics_process(delta: float) -> void:
+	little_guys = Global.friends
+	if little_guys:
+		update_z_index()
 
 #make sure the nearest character shows on top
 func update_z_index():

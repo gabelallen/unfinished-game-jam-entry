@@ -47,7 +47,10 @@ var avoidance_strength = 1000.0 #strength of the pushback
 
 func _ready() -> void:
 	#get randomc color
+	Global.friends.append(self)
+	Global.reach_scalar = sqrt(Global.friends.size())
 	add_to_group("moving_characters")
+	
 	birth_color = colors[randi() % colors.size()]
 	animation.modulate = birth_color
 	rect.color = birth_color
@@ -114,14 +117,13 @@ func _process(delta):
 			animation.flip_h = true
 
 		#collision
-		var friends = get_tree().get_nodes_in_group("moving_characters")
-		for other in friends:
+		for other in Global.friends:
 			if other != self:
 				var distance = global_position.distance_to(other.global_position)
 				if distance < squish_radius:
 					var push_away = (global_position - other.global_position).normalized() * avoidance_strength / distance
 					velocity += push_away
-					if cur_command_timer > min_command_timer && realspeed < 37 && global_position.distance_to(target_position) < target_reach_distance*sqrt(friends.size()):
+					if cur_command_timer > min_command_timer && realspeed < 37 && global_position.distance_to(target_position) < target_reach_distance*Global.reach_scalar:
 						cur_command_timer = 0
 						is_moving = false
 						velocity = Vector2.ZERO
